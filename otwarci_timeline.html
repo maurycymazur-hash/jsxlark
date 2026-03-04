@@ -50,24 +50,25 @@
       {
         id: 1,
         label: "Preparation",
-        month: "By 15 Mar",
+        month: "Weeks 1–3",
         phase: 1,
         accent: "#4cc9f0",
         icon: "⚙️",
-        summary: "Lock partners, materials & venues",
+        summary: "Begins on TikTok plan approval — ~2–3 weeks to complete",
         details: [
-          "Update branding and campaign website",
+          "Phase starts immediately upon TikTok's acceptance of the project plan",
+          "Finalise branding and update the campaign website",
           "Create presentations and leaflets for entrepreneurs",
           "Confirm institutional co-organisers per city",
-          "Book event venues in 4–6 cities",
-          "Obtain TikTok approval on action plan and materials",
+          "Book event venues in confirmed cities",
+          "Align all materials and action plan with TikTok ahead of public launch",
         ],
-        output: "All materials & partners confirmed",
+        output: "All materials & partners confirmed — ready to launch",
       },
       {
         id: 2,
         label: "Campaign Launch",
-        month: "15 Mar",
+        month: "Week 4",
         phase: 1,
         accent: "#f72585",
         icon: "📣",
@@ -84,7 +85,7 @@
       {
         id: 3,
         label: "Educational Activities",
-        month: "Mar – Jun/Aug",
+        month: "Weeks 4–20",
         phase: 1,
         accent: "#7209b7",
         icon: "🎓",
@@ -101,7 +102,7 @@
       {
         id: 4,
         label: "Ambassador Onboarding",
-        month: "Mid-Apr – Jun/Aug",
+        month: "Weeks 5–20",
         phase: 2,
         accent: "#ff9f1c",
         icon: "🤝",
@@ -118,7 +119,7 @@
       {
         id: 5,
         label: "TikTok Stars Contest",
-        month: "Jun – Sep",
+        month: "Weeks 16–24",
         phase: 2,
         accent: "#06d6a0",
         icon: "🏆",
@@ -135,7 +136,7 @@
       {
         id: 6,
         label: "Wrap-up & Report",
-        month: "Jul / Sep",
+        month: "Weeks 22–28",
         phase: 2,
         accent: "#4cc9f0",
         icon: "📊",
@@ -155,35 +156,35 @@
       {
         num: 1,
         title: "Assignment",
-        timing: "Mid-April+",
+        timing: "Wks 5–20 (rolling)",
         desc: "OFF qualifies each eligible lead and assigns them to a named ambassador, starting in parallel with the conference series — so leads from early events are not left waiting.",
         color: "#ff9f1c",
       },
       {
         num: 2,
         title: "Kick-off Call",
-        timing: "Week 1",
+        timing: "Engagement wk 1",
         desc: "A 20–30 minute call to assess the entrepreneur's starting point — profile, offer, sales readiness — and agree on concrete next steps.",
         color: "#f72585",
       },
       {
         num: 3,
         title: "Audit + Plan",
-        timing: "Week 1",
+        timing: "Engagement wk 1",
         desc: "Quick profile/content audit followed by a simple 14-day action plan — the 'Otwarci na Biznes Challenge' — tailored to the entrepreneur's business.",
         color: "#7209b7",
       },
       {
         num: 4,
         title: "Execution Support",
-        timing: "Weeks 1–2",
+        timing: "Engagement wks 1–2",
         desc: "Content guidance and video production support (leveraging OFF's dedicated video operators/editors), plus light-touch check-ins. Once the entrepreneur has a functioning profile and is producing content, the ambassador assesses Shop readiness. When the lead is warm, the ambassador escalates to TikTok SMB Sales and steps back — the commercial conversation is fully owned by the TikTok team from that point.",
         color: "#4cc9f0",
       },
       {
         num: 5,
         title: "Graduation",
-        timing: "Week 2",
+        timing: "Engagement wk 2",
         desc: "Summary of outcomes (profile optimised, content plan created, first LIVE/Shop steps completed) and identification of next-step needs. Trackable output for TikTok reporting.",
         color: "#06d6a0",
       },
@@ -251,156 +252,230 @@
       );
     }
 
-    function StageCard({ stage, isActive, onClick }) {
-      return (
-        <div
-          onClick={onClick}
-          style={{
-            flex: "1 1 140px",
-            minWidth: 130,
-            cursor: "pointer",
-            transition: "transform 0.2s",
-            transform: isActive ? "translateY(-6px)" : "translateY(0)",
-          }}
-        >
-          {/* Icon bubble */}
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
-            <div
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: "50%",
-                background: isActive ? stage.accent : `${stage.accent}22`,
-                border: `2px solid ${stage.accent}`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 20,
-                boxShadow: isActive ? `0 0 20px ${stage.accent}88` : "none",
-                transition: "all 0.2s",
-              }}
-            >
-              {stage.icon}
-            </div>
-          </div>
-
-          {/* Card body */}
-          <div
-            style={{
-              background: isActive
-                ? `linear-gradient(160deg, ${stage.accent}18, rgba(255,255,255,0.04))`
-                : "rgba(255,255,255,0.04)",
-              border: `1px solid ${isActive ? stage.accent : "rgba(255,255,255,0.08)"}`,
-              borderRadius: 14,
-              padding: "14px 12px",
-              boxShadow: isActive ? `0 8px 32px ${stage.accent}22` : "none",
-              transition: "all 0.2s",
-            }}
-          >
-            <div style={{ fontSize: 10, color: stage.accent, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 5 }}>
-              {stage.month}
-            </div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#ffffff", marginBottom: 6, lineHeight: 1.3 }}>
-              {stage.label}
-            </div>
-            <div style={{ fontSize: 11, color: "#9999bb", lineHeight: 1.5 }}>
-              {stage.summary}
-            </div>
-
-            {/* Expanded content shown when this card is active */}
-            {isActive && (
-              <div style={{ marginTop: 12, borderTop: `1px solid ${stage.accent}33`, paddingTop: 12 }}>
-                <ul style={{ listStyle: "none" }}>
-                  {stage.details.map((d, i) => (
-                    <li key={i} style={{ fontSize: 11, color: "#ccccee", marginBottom: 5, paddingLeft: 12, position: "relative", lineHeight: 1.5 }}>
-                      <span style={{ position: "absolute", left: 0, color: stage.accent }}>›</span>
-                      {d}
-                    </li>
-                  ))}
-                </ul>
-                <div
-                  style={{
-                    marginTop: 10,
-                    padding: "7px 10px",
-                    background: `${stage.accent}15`,
-                    borderRadius: 7,
-                    fontSize: 11,
-                    color: stage.accent,
-                    fontWeight: 700,
-                  }}
-                >
-                  ✓ {stage.output}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
-
     /* ─── TIMELINE TAB ──────────────────────────────────────────────────── */
+    /*
+     * Design: a real horizontal track runs across the full width.
+     * The track is split into two coloured bands showing which phase each
+     * stage belongs to, with a visible overlap zone where Phase 2 starts
+     * while Phase 1 is still running (mid-April).
+     * Nodes sit ON the track; a vertical stem drops to a card below.
+     * Clicking a card expands it in place — no layout jump.
+     */
 
     function TimelineTab() {
       const [activeStage, setActiveStage] = useState(null);
-
       const toggle = (id) => setActiveStage(prev => prev === id ? null : id);
+
+      // Evenly spaced node positions as percentages of the track width.
+      // We use 6 stages. Positions run from ~8% to ~92% so nodes don't
+      // sit right at the edges.
+      const positions = [8, 24, 40, 56, 72, 88];
+
+      // The overlap zone sits between stage 3 (index 2) and stage 4 (index 3).
+      // We draw it as a gradient rectangle spanning those two node positions.
+      const overlapLeft  = `${positions[2]}%`;
+      const overlapRight = `${100 - positions[3]}%`;
 
       return (
         <div>
-          {/* Phase band labels */}
-          <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
+
+          {/* ── Phase legend ── */}
+          <div style={{ display: "flex", gap: 20, marginBottom: 32, flexWrap: "wrap", justifyContent: "center" }}>
             {[
-              { label: "Phase 1 — Awareness & Lead Generation (Mar → Jun/Aug)", color: "#4cc9f0" },
-              { label: "Phase 2 — Conversion & Adoption (Apr → Sep)", color: "#ff9f1c" },
+              { label: "Phase 1 — Awareness & Lead Generation", color: "#4cc9f0", stages: "Weeks 4–20" },
+              { label: "Phase 2 — Conversion & Adoption",       color: "#ff9f1c", stages: "Weeks 5–28" },
             ].map(p => (
-              <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 32, height: 3, borderRadius: 2, background: p.color, boxShadow: `0 0 6px ${p.color}` }} />
-                <span style={{ fontSize: 12, color: "#aaaacc" }}>{p.label}</span>
+              <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                {/* A short track segment, not just a dash */}
+                <div style={{
+                  width: 40, height: 6, borderRadius: 3,
+                  background: p.color,
+                  boxShadow: `0 0 10px ${p.color}88`,
+                }} />
+                <div>
+                  <div style={{ fontSize: 12, color: "#ccccee", fontWeight: 600 }}>{p.label}</div>
+                  <div style={{ fontSize: 10, color: "#666688" }}>{p.stages}</div>
+                </div>
               </div>
             ))}
-          </div>
-
-          {/* Stage cards row */}
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {stages.map(stage => (
-              <StageCard
-                key={stage.id}
-                stage={stage}
-                isActive={activeStage === stage.id}
-                onClick={() => toggle(stage.id)}
-              />
-            ))}
-          </div>
-
-          <p style={{ textAlign: "center", color: "#555577", fontSize: 12, marginTop: 16 }}>
-            Click any stage card to expand key actions and outputs
-          </p>
-
-          {/* Phase overlap callout */}
-          <div
-            style={{
-              marginTop: 24,
-              padding: "14px 20px",
-              background: "rgba(255,159,28,0.08)",
-              border: "1px solid rgba(255,159,28,0.25)",
-              borderRadius: 12,
-              display: "flex",
-              gap: 12,
-              alignItems: "flex-start",
-            }}
-          >
-            <span style={{ fontSize: 18 }}>⚡</span>
-            <div>
-              <div style={{ fontWeight: 700, color: "#ff9f1c", fontSize: 13, marginBottom: 3 }}>
-                Key timing note: Phase overlap from mid-April
-              </div>
-              <div style={{ color: "#aaaacc", fontSize: 12, lineHeight: 1.7 }}>
-                Ambassador onboarding (Phase 2) activates in mid-April — in parallel with the conference series, not after it.
-                Leads from early events (Rzeszów, Katowice) are assigned to ambassadors immediately, accelerating conversion
-                without waiting for the full Phase 1 cycle to complete.
+            {/* Overlap indicator */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{
+                width: 40, height: 6, borderRadius: 3,
+                background: "linear-gradient(90deg, #4cc9f0, #ff9f1c)",
+                boxShadow: "0 0 10px rgba(255,159,28,0.4)",
+              }} />
+              <div>
+                <div style={{ fontSize: 12, color: "#ccccee", fontWeight: 600 }}>Phase overlap from mid-April</div>
+                <div style={{ fontSize: 10, color: "#666688" }}>Phases 1 & 2 run in parallel</div>
               </div>
             </div>
           </div>
+
+          {/* ── The track + nodes + cards ── */}
+          <div style={{ position: "relative", paddingBottom: 8 }}>
+
+            {/* TRACK LAYER — sits behind everything */}
+            <div style={{ position: "relative", height: 6, marginBottom: 0, marginLeft: "0%", marginRight: "0%" }}>
+
+              {/* Phase 1 segment: left edge → midpoint of overlap */}
+              <div style={{
+                position: "absolute",
+                left: 0,
+                right: "44%",   /* stops at ~56% which is stage 4's position */
+                height: "100%",
+                background: "linear-gradient(90deg, #4cc9f088, #4cc9f0cc)",
+                borderRadius: "4px 0 0 4px",
+              }} />
+
+              {/* Overlap gradient segment */}
+              <div style={{
+                position: "absolute",
+                left: "38%",
+                right: "38%",
+                height: "100%",
+                background: "linear-gradient(90deg, #4cc9f0, #ff9f1c)",
+                boxShadow: "0 0 14px rgba(255,159,28,0.5)",
+                zIndex: 1,
+              }} />
+
+              {/* Phase 2 segment: midpoint of overlap → right edge */}
+              <div style={{
+                position: "absolute",
+                left: "44%",
+                right: 0,
+                height: "100%",
+                background: "linear-gradient(90deg, #ff9f1ccc, #06d6a088)",
+                borderRadius: "0 4px 4px 0",
+              }} />
+            </div>
+
+            {/* NODE + STEM + CARD COLUMNS — absolutely positioned over the track */}
+            <div style={{ position: "relative", marginTop: -3 }}>
+              {stages.map((stage, i) => {
+                const isActive = activeStage === stage.id;
+                const leftPct  = positions[i];
+
+                return (
+                  <div
+                    key={stage.id}
+                    style={{
+                      position: "absolute",
+                      left: `${leftPct}%`,
+                      transform: "translateX(-50%)",
+                      width: 155,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* Node circle — sits ON the track */}
+                    <div
+                      onClick={() => toggle(stage.id)}
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: "50%",
+                        background: isActive ? stage.accent : `linear-gradient(135deg, ${stage.accent}33, ${stage.accent}11)`,
+                        border: `2.5px solid ${stage.accent}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 18,
+                        cursor: "pointer",
+                        boxShadow: isActive ? `0 0 22px ${stage.accent}cc` : `0 0 8px ${stage.accent}44`,
+                        transition: "all 0.2s",
+                        zIndex: 3,
+                        position: "relative",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {stage.icon}
+                    </div>
+
+                    {/* Vertical stem connecting node to card */}
+                    <div style={{
+                      width: 2,
+                      height: 16,
+                      background: `linear-gradient(180deg, ${stage.accent}99, ${stage.accent}33)`,
+                      flexShrink: 0,
+                    }} />
+
+                    {/* Card */}
+                    <div
+                      onClick={() => toggle(stage.id)}
+                      style={{
+                        width: "100%",
+                        background: isActive
+                          ? `linear-gradient(160deg, ${stage.accent}1a, rgba(255,255,255,0.05))`
+                          : "rgba(255,255,255,0.04)",
+                        border: `1px solid ${isActive ? stage.accent : "rgba(255,255,255,0.08)"}`,
+                        borderRadius: 12,
+                        padding: "11px 10px",
+                        cursor: "pointer",
+                        boxShadow: isActive ? `0 6px 28px ${stage.accent}22` : "none",
+                        transition: "all 0.2s",
+                      }}
+                    >
+                      {/* Timing badge */}
+                      <div style={{
+                        fontSize: 9, color: stage.accent, fontWeight: 700,
+                        letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 5,
+                        background: `${stage.accent}18`,
+                        borderRadius: 4, padding: "2px 5px",
+                        display: "inline-block",
+                      }}>
+                        {stage.month}
+                      </div>
+
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "#ffffff", marginBottom: 4, lineHeight: 1.3 }}>
+                        {stage.label}
+                      </div>
+                      <div style={{ fontSize: 10, color: "#8888aa", lineHeight: 1.5 }}>
+                        {stage.summary}
+                      </div>
+
+                      {/* Expanded details */}
+                      {isActive && (
+                        <div style={{ marginTop: 10, borderTop: `1px solid ${stage.accent}33`, paddingTop: 10 }}>
+                          <ul style={{ listStyle: "none" }}>
+                            {stage.details.map((d, j) => (
+                              <li key={j} style={{
+                                fontSize: 10, color: "#ccccee", marginBottom: 4,
+                                paddingLeft: 10, position: "relative", lineHeight: 1.5,
+                              }}>
+                                <span style={{ position: "absolute", left: 0, color: stage.accent }}>›</span>
+                                {d}
+                              </li>
+                            ))}
+                          </ul>
+                          <div style={{
+                            marginTop: 8, padding: "6px 8px",
+                            background: `${stage.accent}15`, borderRadius: 6,
+                            fontSize: 10, color: stage.accent, fontWeight: 700, lineHeight: 1.4,
+                          }}>
+                            ✓ {stage.output}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/*
+               * Spacer div — because the cards are absolutely positioned,
+               * the parent has zero height. We push it open with a div
+               * whose height matches the tallest collapsed card + node + stem.
+               * When a card expands, it overflows naturally downward.
+               */}
+              <div style={{ height: 200 }} />
+            </div>
+          </div>
+
+          <p style={{ textAlign: "center", color: "#555577", fontSize: 11, marginTop: 12 }}>
+            Click any stage to expand key actions and outputs
+          </p>
         </div>
       );
     }
@@ -612,7 +687,7 @@
               Otwarci na Biznes 2026
             </h1>
             <p style={{ color: "#8888aa", fontSize: 14, margin: 0 }}>
-              March → September 2026 · Two-phase SME education &amp; onboarding programme
+              March → September 2026 · Weeks 1–28 from plan approval · Two-phase SME education &amp; onboarding programme
             </p>
           </div>
 
