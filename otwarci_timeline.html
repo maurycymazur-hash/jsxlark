@@ -266,45 +266,25 @@
       const [activeStage, setActiveStage] = useState(null);
       const toggle = (id) => setActiveStage(prev => prev === id ? null : id);
 
-      // Evenly spaced node positions as percentages of the track width.
-      // We use 6 stages. Positions run from ~8% to ~92% so nodes don't
-      // sit right at the edges.
-      const positions = [8, 24, 40, 56, 72, 88];
-
-      // The overlap zone sits between stage 3 (index 2) and stage 4 (index 3).
-      // We draw it as a gradient rectangle spanning those two node positions.
-      const overlapLeft  = `${positions[2]}%`;
-      const overlapRight = `${100 - positions[3]}%`;
-
       return (
         <div>
 
           {/* ── Phase legend ── */}
           <div style={{ display: "flex", gap: 20, marginBottom: 32, flexWrap: "wrap", justifyContent: "center" }}>
             {[
-              { label: "Phase 1 — Awareness & Lead Generation", color: "#4cc9f0", stages: "Weeks 4–20" },
-              { label: "Phase 2 — Conversion & Adoption",       color: "#ff9f1c", stages: "Weeks 5–28" },
+              { label: "Phase 1 — Awareness & Lead Generation", color: "#4cc9f0", weeks: "Weeks 4–20" },
+              { label: "Phase 2 — Conversion & Adoption",       color: "#ff9f1c", weeks: "Weeks 5–28" },
             ].map(p => (
               <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                {/* A short track segment, not just a dash */}
-                <div style={{
-                  width: 40, height: 6, borderRadius: 3,
-                  background: p.color,
-                  boxShadow: `0 0 10px ${p.color}88`,
-                }} />
+                <div style={{ width: 40, height: 6, borderRadius: 3, background: p.color, boxShadow: `0 0 10px ${p.color}88` }} />
                 <div>
                   <div style={{ fontSize: 12, color: "#ccccee", fontWeight: 600 }}>{p.label}</div>
-                  <div style={{ fontSize: 10, color: "#666688" }}>{p.stages}</div>
+                  <div style={{ fontSize: 10, color: "#666688" }}>{p.weeks}</div>
                 </div>
               </div>
             ))}
-            {/* Overlap indicator */}
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{
-                width: 40, height: 6, borderRadius: 3,
-                background: "linear-gradient(90deg, #4cc9f0, #ff9f1c)",
-                boxShadow: "0 0 10px rgba(255,159,28,0.4)",
-              }} />
+              <div style={{ width: 40, height: 6, borderRadius: 3, background: "linear-gradient(90deg, #4cc9f0, #ff9f1c)", boxShadow: "0 0 10px rgba(255,159,28,0.4)" }} />
               <div>
                 <div style={{ fontSize: 12, color: "#ccccee", fontWeight: 600 }}>Phase overlap from mid-April</div>
                 <div style={{ fontSize: 10, color: "#666688" }}>Phases 1 & 2 run in parallel</div>
@@ -312,130 +292,96 @@
             </div>
           </div>
 
-          {/* ── The track + nodes + cards ── */}
-          <div style={{ position: "relative", paddingBottom: 8 }}>
+          {/*
+           * ── Track + columns ──
+           *
+           * Strategy: the coloured track bar is position:absolute, painted
+           * at a fixed top offset that aligns it with the node centres (which
+           * are 44px tall, so the bar's centre sits at 22px from the column
+           * tops). The six columns are a normal-flow flex row — each column is
+           * display:flex / flex-direction:column / align-items:center.
+           * Because the columns are in normal flow, when one card expands its
+           * column grows in height, which stretches the row and pushes the KPI
+           * bar downward. No overlapping.
+           */}
+          <div style={{ position: "relative" }}>
 
-            {/* TRACK LAYER — sits behind everything */}
-            <div style={{ position: "relative", height: 6, marginBottom: 0, marginLeft: "0%", marginRight: "0%" }}>
-
-              {/* Phase 1 segment: left edge → midpoint of overlap */}
-              <div style={{
-                position: "absolute",
-                left: 0,
-                right: "44%",   /* stops at ~56% which is stage 4's position */
-                height: "100%",
-                background: "linear-gradient(90deg, #4cc9f088, #4cc9f0cc)",
-                borderRadius: "4px 0 0 4px",
-              }} />
-
-              {/* Overlap gradient segment */}
-              <div style={{
-                position: "absolute",
-                left: "38%",
-                right: "38%",
-                height: "100%",
+            {/* Track — absolutely positioned, vertically centred on the nodes.
+                Node height = 44px → node centre = 22px from column top.
+                We paint the bar centred at that 22px mark (bar height 6px → top: 19px). */}
+            <div style={{ position: "absolute", top: 19, left: "4%", right: "4%", height: 6, pointerEvents: "none", zIndex: 0 }}>
+              {/* Phase 1 segment */}
+              <div style={{ position: "absolute", left: 0, right: "42%", height: "100%",
+                background: "linear-gradient(90deg, #4cc9f066, #4cc9f0bb)", borderRadius: "4px 0 0 4px" }} />
+              {/* Overlap gradient — spans the gap between stages 3 and 4 */}
+              <div style={{ position: "absolute", left: "36%", right: "36%", height: "100%",
                 background: "linear-gradient(90deg, #4cc9f0, #ff9f1c)",
-                boxShadow: "0 0 14px rgba(255,159,28,0.5)",
-                zIndex: 1,
-              }} />
-
-              {/* Phase 2 segment: midpoint of overlap → right edge */}
-              <div style={{
-                position: "absolute",
-                left: "44%",
-                right: 0,
-                height: "100%",
-                background: "linear-gradient(90deg, #ff9f1ccc, #06d6a088)",
-                borderRadius: "0 4px 4px 0",
-              }} />
+                boxShadow: "0 0 14px rgba(255,159,28,0.5)", zIndex: 1 }} />
+              {/* Phase 2 segment */}
+              <div style={{ position: "absolute", left: "42%", right: 0, height: "100%",
+                background: "linear-gradient(90deg, #ff9f1cbb, #06d6a066)", borderRadius: "0 4px 4px 0" }} />
             </div>
 
-            {/* NODE + STEM + CARD COLUMNS — absolutely positioned over the track */}
-            <div style={{ position: "relative", marginTop: -3 }}>
-              {stages.map((stage, i) => {
+            {/* Six columns in normal flex flow */}
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 6, position: "relative", zIndex: 1 }}>
+              {stages.map((stage) => {
                 const isActive = activeStage === stage.id;
-                const leftPct  = positions[i];
-
                 return (
                   <div
                     key={stage.id}
-                    style={{
-                      position: "absolute",
-                      left: `${leftPct}%`,
-                      transform: "translateX(-50%)",
-                      width: 155,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
+                    style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", minWidth: 0 }}
                   >
-                    {/* Node circle — sits ON the track */}
+                    {/* Node — sits on the track */}
                     <div
                       onClick={() => toggle(stage.id)}
                       style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: "50%",
+                        width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
                         background: isActive ? stage.accent : `linear-gradient(135deg, ${stage.accent}33, ${stage.accent}11)`,
                         border: `2.5px solid ${stage.accent}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 18,
-                        cursor: "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: 18, cursor: "pointer",
                         boxShadow: isActive ? `0 0 22px ${stage.accent}cc` : `0 0 8px ${stage.accent}44`,
                         transition: "all 0.2s",
-                        zIndex: 3,
-                        position: "relative",
-                        flexShrink: 0,
                       }}
                     >
                       {stage.icon}
                     </div>
 
-                    {/* Vertical stem connecting node to card */}
-                    <div style={{
-                      width: 2,
-                      height: 16,
-                      background: `linear-gradient(180deg, ${stage.accent}99, ${stage.accent}33)`,
-                      flexShrink: 0,
-                    }} />
+                    {/* Stem */}
+                    <div style={{ width: 2, height: 14, flexShrink: 0,
+                      background: `linear-gradient(180deg, ${stage.accent}88, ${stage.accent}22)` }} />
 
-                    {/* Card */}
+                    {/* Card — full column width, in normal flow */}
                     <div
                       onClick={() => toggle(stage.id)}
                       style={{
-                        width: "100%",
+                        width: "100%", cursor: "pointer",
                         background: isActive
                           ? `linear-gradient(160deg, ${stage.accent}1a, rgba(255,255,255,0.05))`
                           : "rgba(255,255,255,0.04)",
                         border: `1px solid ${isActive ? stage.accent : "rgba(255,255,255,0.08)"}`,
-                        borderRadius: 12,
-                        padding: "11px 10px",
-                        cursor: "pointer",
+                        borderRadius: 10, padding: "10px 8px",
                         boxShadow: isActive ? `0 6px 28px ${stage.accent}22` : "none",
-                        transition: "all 0.2s",
+                        transition: "border-color 0.2s, background 0.2s",
                       }}
                     >
                       {/* Timing badge */}
                       <div style={{
-                        fontSize: 9, color: stage.accent, fontWeight: 700,
-                        letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 5,
-                        background: `${stage.accent}18`,
-                        borderRadius: 4, padding: "2px 5px",
+                        fontSize: 8, color: stage.accent, fontWeight: 700,
+                        letterSpacing: 1, textTransform: "uppercase", marginBottom: 5,
+                        background: `${stage.accent}18`, borderRadius: 4, padding: "2px 5px",
                         display: "inline-block",
                       }}>
                         {stage.month}
                       </div>
-
-                      <div style={{ fontSize: 11, fontWeight: 700, color: "#ffffff", marginBottom: 4, lineHeight: 1.3 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", marginBottom: 4, lineHeight: 1.3 }}>
                         {stage.label}
                       </div>
                       <div style={{ fontSize: 10, color: "#8888aa", lineHeight: 1.5 }}>
                         {stage.summary}
                       </div>
 
-                      {/* Expanded details */}
+                      {/* Expanded section — grows in place, pushing column height */}
                       {isActive && (
                         <div style={{ marginTop: 10, borderTop: `1px solid ${stage.accent}33`, paddingTop: 10 }}>
                           <ul style={{ listStyle: "none" }}>
@@ -462,18 +408,10 @@
                   </div>
                 );
               })}
-
-              {/*
-               * Spacer div — because the cards are absolutely positioned,
-               * the parent has zero height. We push it open with a div
-               * whose height matches the tallest collapsed card + node + stem.
-               * When a card expands, it overflows naturally downward.
-               */}
-              <div style={{ height: 200 }} />
             </div>
           </div>
 
-          <p style={{ textAlign: "center", color: "#555577", fontSize: 11, marginTop: 12 }}>
+          <p style={{ textAlign: "center", color: "#555577", fontSize: 11, marginTop: 16 }}>
             Click any stage to expand key actions and outputs
           </p>
         </div>
